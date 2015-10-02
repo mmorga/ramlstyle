@@ -1,0 +1,196 @@
+#!/usr/bin/env ruby
+
+require 'erb'
+require 'tilt'
+require 'redcarpet'
+require 'github/markup'
+require 'raml'
+
+class Raml::Root
+
+  def name
+    "/"
+  end
+
+  def recursive_resources(resource)
+    resource.resources.values.inject(resource.resources.values) do |memo, resource|
+      memo << recursive_resources(resource)
+    end.flatten
+  end
+
+  def all_resources
+    recursive_resources(self)
+  end
+
+  def all_methods(method_filter = %w(get put post delete head options patch))
+    all_resources.collect {|r|
+      r.methods.values.select { |m|
+        method_filter.include?(m.name)
+      }
+    }.flatten
+  end
+
+  def all_responses()
+    all_methods.collect {|m|
+      m.responses.values
+    }.flatten
+  end
+end
+
+class Renderer
+  def initialize(template, template_var_hash)
+    @template = Tilt.new(template)
+    @context = ERBContext.new(template_var_hash)
+  end
+
+  def render
+    @template.render(@context)
+  end
+end
+
+class RendererFactory
+  def renderer_for(o)
+    if o.kind_of?(Raml::Root)
+      Renderer.new('templates/template.html.erb', {raml: o})
+    elsif o.kind_of?(Raml::Resource)
+      Renderer.new('templates/resource.html.erb', {resource: o})
+    elsif o.kind_of?(Raml::Parameter::AbstractParameter)
+      Renderer.new('templates/item.html.erb', {item: o, key: o.name})
+    else
+      raise "Model not found for node #{o.class}"
+    end
+  end
+end
+
+class ERBContext
+  include ERB::Util
+  def initialize(hash)
+    hash.each_pair do |key, value|
+      instance_variable_set('@' + key.to_s, value)
+    end
+  end
+
+  def markdown(str)
+    @markdown_renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
+    @markdown_renderer.render(str || "")
+  end
+
+  def render(obj)
+    RendererFactory.new.renderer_for(obj).render
+  end
+
+  def get_binding
+    binding
+  end
+end
+
+def render(obj, file_name)
+  File.open(file_name, "w") do |f|
+    f.write(RendererFactory.new.renderer_for(obj).render)
+  end
+end
+
+class Raml::Node
+  # A method that gives you the full path of the node to make it easier to find the error.
+  def path_name
+    self == parent ? "" : File.join(parent.path_name, name.to_s)
+  end
+
+  def parent_url
+    parent.path_name
+  end
+
+  def unique_id
+    path_name.gsub(/[\/\{\}]/, "_")
+  end
+
+  def all_uri_parameters
+    children.select {|child| child.kind_of? Raml::Parameter::UriParameter}
+  end
+
+  def query_parameters
+    children.select {|child| child.kind_of? Raml::Parameter::QueryParameter}
+  end
+
+  def form_parameters
+    children.select {|child| child.kind_of? Raml::Parameter::FormParameter}
+  end
+
+  # TODO: need to implement securedBy
+  def secured_by
+    "TODO: not implemented"
+  end
+end
+
+def lint(severity, rule_name, nodes, &test)
+  Array(nodes).each do |node|
+    puts "#{severity.to_s.upcase}: #{rule_name} at #{node.path_name}" unless test.call(node)
+  end
+end
+
+raml_files = [
+  "/Users/mmorga/work/dcx/business-process-service-raml/business-process-service-0.1.0.raml",
+  "/Users/mmorga/work/dcx/fw-v2-docs/api.raml",
+  "/Users/mmorga/work/get/picard/docs/api.raml",
+  "/Users/mmorga/work/get/open_stack_load_balancer_2_0_raml/open_stack_lbaas_api-0.2.0.raml"]
+
+raml_files.each do |raml_file|
+  puts "\nParsing #{File.join(raml_file.split('/').last(3))}"
+
+  raml = Raml.parse_file(raml_file)
+  raml.expand  # this expands out the resource_types, traits, and inline schemas
+
+  # Root
+
+  lint(:error, "API Version (version) is required", raml) do |raml|
+    raml.version
+  end
+
+  # Resources
+
+  lint(:warning, "Resource description is missing", raml.all_resources) do |resource|
+    resource.description
+  end
+
+  lint(:warning, "Resource name should match standards", raml.all_resources) do |resource|
+    resource.name =~ /^\/([a-z]+(\-[a-z]+)*|{[a-z]+([A-Z][a-z]+)*})$/
+  end
+
+  # Methods
+
+  lint(:warning, "Method should have description", raml.all_methods) do |method|
+    method.description
+  end
+
+  lint(:warning, "Patch, Post, and Put Methods should have JSON bodies", raml.all_methods(%w(put post patch))) do |method|
+    method.bodies.keys.include?("application/json")
+  end
+
+  lint(:warning, "Patch, Post, and Put Methods should have JSON examples", raml.all_methods(%w(put post patch))) do |method|
+    method.bodies.keys.include?("application/json") &&
+      method.bodies["application/json"].example
+  end
+
+  lint(:warning, "Patch, Post, and Put Methods should have JSON schema", raml.all_methods(%w(put post patch))) do |method|
+    method.bodies.keys.include?("application/json") &&
+      method.bodies["application/json"].schema
+  end
+
+  # Responses
+
+  lint(:warning, "Response should have description", raml.all_responses) do |response|
+    response.description
+  end
+
+  lint(:warning, "Responses should have JSON examples", raml.all_responses) do |response|
+    response.bodies.keys.include?("application/json") &&
+      response.bodies["application/json"].example
+  end
+
+  lint(:warning, "Responses should have JSON schema", raml.all_responses) do |response|
+    response.bodies.keys.include?("application/json") &&
+      response.bodies["application/json"].schema
+  end
+
+  render(raml, "#{File.basename(raml_file, '.raml')}.html")
+end

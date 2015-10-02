@@ -1,0 +1,184 @@
+<% if (@resource.methods || (@resource.description && @resource.parent_url)) %>
+  <div class="panel panel-white">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" href="#panel_<%= @resource.unique_id %>">
+          <span class="parent"><%= @resource.parent_url %></span><%= @resource.name %>
+        </a>
+
+        <span class="methods">
+          <% for method in @resource.methods.values %>
+            <a class="collapsed" href="#panel_<%= @resource.unique_id %>" data-toggle="collapse" aria-expanded="false" aria-controls="panel_<%= @resource.unique_id %>">
+              <span class="badge badge_<%= method.name %>"><%= method.name %><% if method.secured_by.length %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
+            </a>
+          <% end %>
+        </span>
+      </h4>
+    </div>
+
+    <div id="panel_<%= @resource.unique_id %>" class="panel-collapse collapse">
+      <div class="panel-body">
+        <% if @resource.parent_url %>
+          <% if @resource.description %>
+            <div class="@resource-description">
+              <%= markdown(@resource.description) %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <div class="list-group">
+          <% for method in @resource.methods.values %>
+            <div onclick="window.location.href = '#<%= @resource.unique_id %>_<%= method.name %>'" data-toggle="collapse" href="#<%= @resource.unique_id %>_<%= method.name %>" aria-expanded="false" aria-controls="<%= @resource.unique_id %>_<%= method.name %>" class="list-group-item">
+              <span class="badge badge_<%= method.name %>"><%= method.name %><% if method.secured_by.length %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
+              <div class="method_description">
+                <%= markdown method.description%>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="collapse" tabindex="0" id="<%= @resource.unique_id %>_<%= method.name %>">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <% if method.secured_by.length %>
+                    <div class="alert alert-warning">
+                      <span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <%= method.secured_by %>
+                    </div>
+                  <% end %>
+
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs">
+                    <% if method.all_uri_parameters.length || method.query_parameters || method.headers || method.body %>
+                      <li class="active">
+                        <a href="#<%= @resource.unique_id %>_<%= method.name %>_request" data-toggle="tab">Request</a>
+                      </li>
+                    <% end %>
+
+                    <% if method.responses %>
+                      <li>
+                        <a href="#<%= @resource.unique_id %>_<%= method.name %>_response" data-toggle="tab">Response</a>
+                      </li>
+                    <% end %>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <% if method.all_uri_parameters.length || method.query_parameters || method.headers || method.body %>
+                      <div class="tab-pane active" id="<%= @resource.unique_id %>_<%= method.name %>_request">
+                        <% if @resource.all_uri_parameters.length %>
+                          <h3>URI Parameters</h3>
+                          <ul>
+                            <% for item in @resource.all_uri_parameters %>
+                              <%= render(item) %>
+                            <% end %>
+                          </ul>
+                        <% end %>
+
+                        <% if method.headers %>
+                          <h3>Headers</h3>
+                          <ul>
+                            <% for key, item in method.headers %>
+                              <%= render(item) %>
+                            <% end %>
+                          </ul>
+                        <% end %>
+
+                        <% if method.query_parameters %>
+                          <h3>Query Parameters</h3>
+                          <ul>
+                            <% for item in method.query_parameters.values %>
+                              <%= render(item) %>
+                            <% end %>
+                          </ul>
+                        <% end %>
+
+                        <% if method.bodies.count > 0 %>
+                          <h3>Body</h3>
+                          <% for key, b in method.bodies %>
+                            <p><strong>Type: <%= key %></strong></p>
+                            <% if b.form_parameters %>
+                              <strong>Form Parameters</strong>
+                              <ul>
+                                <% for key, item in b.form_parameters %>
+                                  <%= render(item) %>
+                                <% end %>
+                              </ul>
+                            <% end %>
+
+                            <% if b.schema %>
+                              <p><strong>Schema</strong>:
+                                  <span class="methods">
+                                    <a href="#<%= @resource.unique_id %>_<%= method.name %>_request_schema" data-toggle="collapse" aria-expanded="true" aria-controls="<%= @resource.unique_id %>_<%= method.name %>_request_schema"><span class="glyphicon glyphicon-collapse-down" title="collapse"></span></a>
+                                  </span>
+                                </p>
+
+                              <pre class="collapse" id="<%= @resource.unique_id %>_<%= method.name %>_request_schema"><code class="json-schema"><%= h(b.schema.value) %></code></pre>
+                            <% end %>
+
+                            <% if b.example %>
+                              <p><strong>Example</strong>:
+                                  <span class="methods">
+                                    <a href="#<%= @resource.unique_id %>_<%= method.name %>_request_example" data-toggle="collapse" aria-expanded="true" aria-controls="<%= @resource.unique_id %>_<%= method.name %>_request_example"><span class="glyphicon glyphicon-collapse-down" title="collapse"></span></a>
+                                  </span>
+                                </p>
+                              <pre class="collapse" id="<%= @resource.unique_id %>_<%= method.name %>_request_example"><code class="json example"><%= h(b.example) %></code></pre>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    <% end %>
+
+                    <% if method.responses %>
+                      <div class="tab-pane" id="<%= @resource.unique_id %>_<%= method.name %>_response">
+                        <% for key, response in method.responses %>
+                          <h2>HTTP status code <a href="http://httpstatus.es/<%= key %>" target="_blank"><%= key %></a></h2>
+                          <%= markdown response.description%>
+
+                          <% if response.headers %>
+                            <h3>Headers</h3>
+                            <ul>
+                              <% for key, item in response.headers %>
+                                <%= render(item) %>
+                              <% end %>
+                            </ul>
+                          <% end %>
+
+                          <% if response.bodies.count > 0 %>
+                            <h3>Body</h3>
+                            <% for key, b in response.bodies %>
+                              <p><strong>Type: <%= key %></strong></p>
+
+                              <% if b.schema %>
+                                <p><strong>Schema</strong>:
+                                  <span class="methods">
+                                    <a href="#<%= @resource.unique_id %>_<%= method.name %>_response_schema" data-toggle="collapse" aria-expanded="true" aria-controls="<%= @resource.unique_id %>_<%= method.name %>_response_schema"><span class="glyphicon glyphicon-collapse-down" title="collapse"></span></a>
+                                  </span>
+                                </p>
+                                <pre class="collapse" id="<%= @resource.unique_id %>_<%= method.name %>_response_schema"><code class="json-schema"><%= h(b.schema.value) %></code></pre>
+                              <% end %>
+
+                              <% if b.example %>
+                                <p><strong>Example</strong>:
+                                  <span class="methods">
+                                    <a href="#<%= @resource.unique_id %>_<%= method.name %>_response_example" data-toggle="collapse" aria-expanded="true" aria-controls="<%= @resource.unique_id %>_<%= method.name %>_response_example"><span class="glyphicon glyphicon-collapse-down" title="collapse"></span></a>
+                                  </span>
+                                </p>
+                                <pre id="<%= @resource.unique_id %>_<%= method.name %>_response_example" class="collapse"><code class="json example"><%= h(b.example) %></code></pre>
+                              <% end %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% for sub_resource in @resource.resources.values %>
+  <%= render sub_resource %>
+<% end %>

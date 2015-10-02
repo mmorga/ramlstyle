@@ -1,0 +1,40 @@
+<li>
+  <% if @item.display_name %>
+    <strong><%= @item.display_name %></strong>:
+  <% else %>
+    <strong><%= @key %></strong>:
+  <% end %>
+
+  <em>
+    <% if @item.required %>required <% end %>
+    (
+    <% if @item.enum %>
+      one of <%= @item.enum.join(', ') %>
+    <% else %>
+      <%= @item.type %>
+    <% end %>
+
+    <% if @item.default %> - default: <%= @item.default %><% end %>
+    <% if @item.repeat %> - repeat: <%= @item.repeat %><% end %>
+    <% if @item.type == 'string' %>
+      <% if @item.min_length %> - min_length: <%= @item.min_length %><% end %>
+      <% if @item.max_length %> - max_length: <%= @item.max_length %><% end %>
+    <% else %>
+      <% if @item.minimum %> - minimum: <%= @item.minimum %><% end %>
+      <% if @item.maximum %> - maximum: <%= @item.maximum %><% end %>
+    <% end %>
+    <% if @item.pattern %> - pattern: <%= @item.pattern %><% end %>
+    )
+  </em>
+
+  <%= markdown(@item.description) %>
+
+  <% if @item.example %>
+    <p><strong>Example</strong>:</p>
+    <% if @item.type == 'string' %>
+      <pre><%= h(@item.example) %></pre>
+    <% else %>
+      <pre><code><%= h(@item.example) %></code></pre>
+    <% end %>
+  <% end %>
+</li>
