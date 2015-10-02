@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'erb'
-require 'tilt'
-require 'redcarpet'
 require 'github/markup'
 require 'raml'
 
@@ -39,12 +37,12 @@ end
 
 class Renderer
   def initialize(template, template_var_hash)
-    @template = Tilt.new(template)
+    @template = ERB.new(File.read(template))
     @context = ERBContext.new(template_var_hash)
   end
 
   def render
-    @template.render(@context)
+    @template.result(@context.get_binding)
   end
 end
 
@@ -71,8 +69,7 @@ class ERBContext
   end
 
   def markdown(str)
-    @markdown_renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
-    @markdown_renderer.render(str || "")
+    GitHub::Markup.render("f.md", str || "")
   end
 
   def render(obj)

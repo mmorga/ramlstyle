@@ -26,9 +26,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  # TODO: Add dependency on raml_ruby once version released
   spec.add_dependency "redcarpet"
   spec.add_dependency "github-markup"
-  spec.add_dependency "tilt"
 
   spec.add_development_dependency "pry"
   spec.add_development_dependency "bundler", "~> 1.10"
