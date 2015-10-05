@@ -31,58 +31,59 @@ module Ramlstyle
       @output_dir = Dir.getwd
     end
 
+    def exit_with_msg(msg)
+      puts msg
+      exit
+    end
+
     def parse
-      optparse = OptionParser.new do|opts|
-        # Set a banner, displayed at the top
-        # of the help screen.
+      OptionParser.new do |opts|
         opts.banner = "Usage: rubystyle [options] file1 file2 ..."
-
-        # Define the options, and what they do
-        opts.on( '-v', '--verbose', 'Output more information' ) do
-          @verbose = true
-        end
-        opts.on('--no-document', 'Do not produce HTML documentation' ) do
-          @no_document = true
-        end
-        opts.on('--no-lint', 'Do not run linter rules' ) do
-          @no_lint = true
-        end
-        opts.on( '-o', '--output-dir DIR', 'Write HTML documentation to DIR' ) do |dir|
-          @output_dir = dir
-        end
-        opts.on( '--version', 'print the version' ) do
-          puts Ramlstyle::VERSION
-          exit
-        end
-
-        # This displays the help screen, all programs are
-        # assumed to have this option.
-        opts.on( '-h', '--help', 'Display this screen' ) do
-          puts opts
-          exit
-        end
-      end
-      optparse.parse!
+        opts.on('-v', '--verbose', 'Output more information') { @verbose = true }
+        opts.on('--no-document', 'Do not produce HTML documentation') { @no_document = true }
+        opts.on('--no-lint', 'Do not run linter rules') { @no_lint = true }
+        opts.on('-o', '--output-dir DIR', 'Write HTML documentation to DIR') { |dir| @output_dir = dir }
+        opts.on('--version', 'print the version') { exit_with_msg(Ramlstyle::VERSION) }
+        opts.on('-h', '--help', 'Display this screen') { exit_with_msg(opts) }
+      end.parse!
+      self
     end
   end
 
   class Command
+    attr_reader :opts
+
     def run
-      opts = CommandParser.new
-      opts.parse
+      @opts = CommandParser.new.parse
 
       ARGV.each do |raml_file|
-        puts "\nParsing #{File.join(raml_file.split('/').last(3))}"
-
-        raml_parser = Ramlstyle::RamlParser.new(raml_file)
-        raml_parser.parse
-
-        Ramlstyle::Review.new(raml_parser.raml).review unless opts.no_lint
-
-        Ramlstyle::Documentation.new(raml_parser.raml)
-          .render_to_file(
-            File.join(opts.output_dir, "#{File.basename(raml_file, '.raml')}.html")) unless opts.no_document
+        run_file(raml_file)
       end
+    end
+
+    def parse(raml_file)
+      Ramlstyle::RamlParser.new(raml_file).parse
+    end
+
+    def review(raml)
+      Ramlstyle::Review.new(raml).review
+    end
+
+    def output_file(raml_file)
+      File.join(opts.output_dir, "#{File.basename(raml_file, '.raml')}.html")
+    end
+
+    def document(raml_file, raml)
+      Ramlstyle::Documentation.new(raml)
+        .render_to_file(output_file(raml_file))
+    end
+
+    def run_file(raml_file)
+      puts "\nParsing #{File.join(raml_file.split('/').last(3))}"
+
+      raml = parse(raml_file)
+      review(raml) unless opts.no_lint
+      document(raml_file, raml) unless opts.no_document
     end
   end
 end

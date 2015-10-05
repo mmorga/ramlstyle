@@ -7,25 +7,19 @@ module Ramlstyle
     def review
       # Root
 
-      lint(:error, "API Version (version) is required", @raml) do |raml|
-        raml.version
-      end
+      lint(:error, "API Version (version) is required", @raml, &:version)
 
       # Resources
 
-      lint(:warning, "Resource description is missing", @raml.all_resources) do |resource|
-        resource.description
-      end
+      lint(:warning, "Resource description is missing", @raml.all_resources, &:description)
 
       lint(:warning, "Resource name should match standards", @raml.all_resources) do |resource|
-        resource.name =~ /^\/([a-z]+(\-[a-z]+)*|{[a-z]+([A-Z][a-z]+)*})$/
+        resource.name =~ %r(^\/([a-z]+(\-[a-z]+)*|{[a-z]+([A-Z][a-z]+)*})$)
       end
 
       # Methods
 
-      lint(:warning, "Method should have description", @raml.all_methods) do |method|
-        method.description
-      end
+      lint(:warning, "Method should have description", @raml.all_methods, &:description)
 
       lint(:warning, "Patch, Post, and Put Methods should have JSON bodies", @raml.all_methods(%w(put post patch))) do |method|
         method.bodies.keys.include?("application/json")
@@ -43,9 +37,7 @@ module Ramlstyle
 
       # Responses
 
-      lint(:warning, "Response should have description", @raml.all_responses) do |response|
-        response.description
-      end
+      lint(:warning, "Response should have description", @raml.all_responses, &:description)
 
       lint(:warning, "Responses should have JSON examples", @raml.all_responses) do |response|
         response.bodies.keys.include?("application/json") &&
