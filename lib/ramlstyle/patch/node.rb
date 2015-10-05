@@ -4,7 +4,7 @@ module Raml
   class Node
     # A method that gives you the full path of the node to make it easier to find the error.
     def path_name
-      self == parent ? "" : File.join(parent.path_name, name.to_s)
+      File.join(parent.path_name, name.to_s)
     end
 
     def parent_url

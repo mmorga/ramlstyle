@@ -8,7 +8,7 @@ module Ramlstyle
     end
 
     def render
-      @template.result(@context.get_binding)
+      @template.result(@context.context_binding)
     end
   end
 end

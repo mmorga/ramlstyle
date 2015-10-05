@@ -21,8 +21,8 @@ module Ramlstyle
     end
   end
 
-  class CommandParser
-    attr_reader :verbose, :no_document, :no_lint, :output_dir
+  class CommandOptions
+    attr_reader :verbose, :no_document, :no_lint, :output_dir, :args
 
     def initialize
       @verbose = false
@@ -46,7 +46,39 @@ module Ramlstyle
         opts.on('--version', 'print the version') { exit_with_msg(Ramlstyle::VERSION) }
         opts.on('-h', '--help', 'Display this screen') { exit_with_msg(opts) }
       end.parse!
+      @args = ARGV
       self
+    end
+  end
+
+  class FileCommand
+    def initialize(opts, raml_file)
+      @opts = opts
+      @raml_file = raml_file
+    end
+
+    def parse
+      @raml = Ramlstyle::RamlParser.new(@raml_file).parse
+    end
+
+    def review
+      Ramlstyle::Review.new(@raml).review
+    end
+
+    def output_file
+      File.join(@opts.output_dir, "#{File.basename(@raml_file, '.raml')}.html")
+    end
+
+    def document
+      Ramlstyle::Documentation.new(@raml).render_to_file(output_file)
+    end
+
+    def run
+      puts "\nParsing #{@raml_file}"
+
+      parse
+      review unless @opts.no_lint
+      document unless @opts.no_document
     end
   end
 
@@ -54,36 +86,11 @@ module Ramlstyle
     attr_reader :opts
 
     def run
-      @opts = CommandParser.new.parse
+      @opts = CommandOptions.new.parse
 
-      ARGV.each do |raml_file|
-        run_file(raml_file)
+      opts.args.each do |raml_file|
+        FileCommand.new(opts, raml_file).run
       end
-    end
-
-    def parse(raml_file)
-      Ramlstyle::RamlParser.new(raml_file).parse
-    end
-
-    def review(raml)
-      Ramlstyle::Review.new(raml).review
-    end
-
-    def output_file(raml_file)
-      File.join(opts.output_dir, "#{File.basename(raml_file, '.raml')}.html")
-    end
-
-    def document(raml_file, raml)
-      Ramlstyle::Documentation.new(raml)
-        .render_to_file(output_file(raml_file))
-    end
-
-    def run_file(raml_file)
-      puts "\nParsing #{File.join(raml_file.split('/').last(3))}"
-
-      raml = parse(raml_file)
-      review(raml) unless opts.no_lint
-      document(raml_file, raml) unless opts.no_document
     end
   end
 end

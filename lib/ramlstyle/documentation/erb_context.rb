@@ -18,7 +18,7 @@ module Ramlstyle
       RendererFactory.new.renderer_for(obj).render
     end
 
-    def get_binding
+    def context_binding
       binding
     end
   end
