@@ -1,7 +1,8 @@
 require "optparse"
 require "raml"
 require "ramlstyle/version"
-require "ramlstyle/patch"
+require "ramlstyle/patch/node"
+require "ramlstyle/patch/root"
 require "ramlstyle/documentation"
 require "ramlstyle/review"
 
