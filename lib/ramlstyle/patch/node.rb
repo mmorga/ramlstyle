@@ -26,10 +26,5 @@ module Raml
     def form_parameters
       children.select { |child| child.is_a? Raml::Parameter::FormParameter }
     end
-
-    # TODO: need to implement securedBy
-    def secured_by
-      "TODO: not implemented"
-    end
   end
 end

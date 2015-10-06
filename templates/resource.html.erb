@@ -40,7 +40,7 @@
                 <div class="panel-body">
                   <% if method.secured_by.length %>
                     <div class="alert alert-warning">
-                      <span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <%= method.secured_by %>
+                      <span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <%= method.secured_by.keys.join(",") %>
                     </div>
                   <% end %>
 
