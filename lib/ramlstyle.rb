@@ -38,6 +38,12 @@ module Ramlstyle
     end
 
     def parse
+      option_parser.parse!
+      @args = ARGV
+      self
+    end
+
+    def option_parser
       OptionParser.new do |opts|
         opts.banner = "Usage: rubystyle [options] file1 file2 ..."
         opts.on('-v', '--verbose', 'Output more information') { @verbose = true }
@@ -46,9 +52,7 @@ module Ramlstyle
         opts.on('-o', '--output-dir DIR', 'Write HTML documentation to DIR') { |dir| @output_dir = dir }
         opts.on('--version', 'print the version') { exit_with_msg(Ramlstyle::VERSION) }
         opts.on('-h', '--help', 'Display this screen') { exit_with_msg(opts) }
-      end.parse!
-      @args = ARGV
-      self
+      end
     end
   end
 
