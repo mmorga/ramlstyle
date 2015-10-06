@@ -3,13 +3,13 @@ require "ramlstyle/documentation/renderer_factory"
 require "ramlstyle/documentation/erb_context"
 
 module Ramlstyle
-  class Documentation
+  class Document
     def initialize(obj)
       @obj = obj
     end
 
     def render
-      RendererFactory.new.renderer_for(@obj).render
+      Documentation::RendererFactory.new.renderer_for(@obj).render
     end
 
     def render_to_file(file_name)
