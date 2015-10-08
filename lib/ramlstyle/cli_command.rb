@@ -5,8 +5,8 @@ module Ramlstyle
   class CLICommand
     attr_reader :opts
 
-    def run
-      @opts = Ramlstyle::Command::Options.new.parse
+    def run(args)
+      @opts = Ramlstyle::Command::Options.new.parse(args)
 
       opts.args.each do |raml_file|
         Ramlstyle::Command::FileCommand.new(opts, raml_file).run

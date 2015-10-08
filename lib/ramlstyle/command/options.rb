@@ -10,6 +10,7 @@ module Ramlstyle
         @no_document = false
         @no_lint = false
         @output_dir = Dir.getwd
+        @args = []
       end
 
       def exit_with_msg(msg)
@@ -17,9 +18,9 @@ module Ramlstyle
         exit
       end
 
-      def parse
-        option_parser.parse!
-        @args = ARGV
+      def parse(args)
+        option_parser.parse!(args)
+        @args = args
         self
       end
 

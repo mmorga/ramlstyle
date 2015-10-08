@@ -2,4 +2,4 @@
 
 require 'ramlstyle'
 
-Ramlstyle::CLICommand.new.run
+Ramlstyle::CLICommand.new.run(ARGV)
