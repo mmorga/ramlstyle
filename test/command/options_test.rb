@@ -5,7 +5,7 @@ module Ramlstyle
   module Command
     class DefaultOptionsTest < Minitest::Test
       def setup
-        @options  = Options.new.parse([])
+        @options = Options.new.parse([])
       end
 
       def test_version
