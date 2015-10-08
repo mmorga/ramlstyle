@@ -67,7 +67,7 @@
                           <h3>URI Parameters</h3>
                           <ul>
                             <% for item in @resource.all_uri_parameters %>
-                              <%= render(item) %>
+                              <%= render_parameter(item) %>
                             <% end %>
                           </ul>
                         <% end %>
@@ -76,7 +76,7 @@
                           <h3>Headers</h3>
                           <ul>
                             <% for key, item in method.headers %>
-                              <%= render(item) %>
+                              <%= render_parameter(item) %>
                             <% end %>
                           </ul>
                         <% end %>
@@ -85,7 +85,7 @@
                           <h3>Query Parameters</h3>
                           <ul>
                             <% for item in method.query_parameters.values %>
-                              <%= render(item) %>
+                              <%= render_parameter(item) %>
                             <% end %>
                           </ul>
                         <% end %>
@@ -98,7 +98,7 @@
                               <strong>Form Parameters</strong>
                               <ul>
                                 <% for key, item in b.form_parameters %>
-                                  <%= render(item) %>
+                                  <%= render_parameter(item) %>
                                 <% end %>
                               </ul>
                             <% end %>
@@ -136,7 +136,7 @@
                             <h3>Headers</h3>
                             <ul>
                               <% for key, item in response.headers %>
-                                <%= render(item) %>
+                                <%= render_parameter(item) %>
                               <% end %>
                             </ul>
                           <% end %>
@@ -180,5 +180,5 @@
 <% end %>
 
 <% for sub_resource in @resource.resources.values %>
-  <%= render sub_resource %>
+  <%= render_resource sub_resource %>
 <% end %>

@@ -16,8 +16,12 @@ module Ramlstyle
         GitHub::Markup.render("f.md", str || "")
       end
 
-      def render(obj)
-        RendererFactory.new.renderer_for(obj).render
+      def render_resource(res)
+        RendererFactory.new.renderer_for_resource(res).render
+      end
+
+      def render_parameter(param)
+        RendererFactory.new.renderer_for_parameter(param).render
       end
 
       def context_binding
