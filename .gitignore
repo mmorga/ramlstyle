@@ -9,6 +9,7 @@
 /tmp/
 /output/
 run-samples
+.DS_Store
 
 # Binstubs
 /bin/_guard-core
