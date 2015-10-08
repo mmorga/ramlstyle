@@ -9,7 +9,7 @@ module Ramlstyle
     end
 
     def render
-      Documentation::RendererFactory.new.renderer_for(@obj).render
+      Documentation::RendererFactory.new.renderer_for_root(@obj).render
     end
 
     def render_to_file(file_name)
