@@ -24,8 +24,8 @@ module Ramlstyle
         assert_equal @options.output_dir, Dir.getwd
       end
 
-      def test_args
-        assert_equal [], @options.args
+      def test_files
+        assert_equal [], @options.files
       end
     end
 
@@ -51,8 +51,19 @@ module Ramlstyle
         assert_equal @options.output_dir, "mytestdir"
       end
 
-      def test_args
-        assert_equal %w(file1 file2), @options.args
+      def test_files
+        assert_equal %w(file1 file2), @options.files
+      end
+    end
+
+    class SettingsTest < Minitest::Test
+      def test_new_defaults
+        settings = Settings.new
+        refute settings.verbose
+        refute settings.no_document
+        refute settings.no_lint
+        assert_equal Dir.getwd, settings.output_dir
+        assert_empty settings.files
       end
     end
   end

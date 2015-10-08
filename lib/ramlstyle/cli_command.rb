@@ -8,7 +8,7 @@ module Ramlstyle
     def run(args)
       @opts = Ramlstyle::Command::Options.new.parse(args)
 
-      opts.args.each do |raml_file|
+      opts.files.each do |raml_file|
         Ramlstyle::Command::FileCommand.new(opts, raml_file).run
       end
     end
