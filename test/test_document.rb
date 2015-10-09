@@ -10,5 +10,12 @@ module Ramlstyle
       assert_match(raml.title, actual)
       assert_match(raml.base_uri, actual)
     end
+
+    def test_render_to_file
+      raml_file = "dummy.raml"
+      raml = Raml::Root.new('title' => 'SampleRenderTest', 'baseUri' => 'http://foo.com')
+      IO.expects(:write)
+      Document.new(raml).render_to_file(raml_file)
+    end
   end
 end
