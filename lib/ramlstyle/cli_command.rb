@@ -6,10 +6,10 @@ module Ramlstyle
     attr_reader :opts
 
     def run(args)
-      @opts = Ramlstyle::Command::Options.new.parse(args)
+      @opts = Command::Options.new.parse(args)
 
       opts.files.each do |raml_file|
-        Ramlstyle::Command::FileCommand.new(opts, raml_file).run
+        Command::FileCommand.new(opts, raml_file).run
       end
     end
   end
