@@ -3,7 +3,7 @@ require 'ramlstyle/command/options'
 
 module Ramlstyle
   module Command
-    class DefaultOptionsTest < Minitest::Test
+    class TestDefaultOptions < Minitest::Test
       def setup
         @options = Options.new.parse([])
       end
@@ -29,7 +29,7 @@ module Ramlstyle
       end
     end
 
-    class OptionsTest < Minitest::Test
+    class TestOptions < Minitest::Test
       def setup
         @options = Options.new.parse(
           %w(-v --no-document --no-lint -o mytestdir file1 file2))

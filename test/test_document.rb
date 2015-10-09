@@ -2,7 +2,7 @@ require 'test_helper'
 require 'raml'
 
 module Ramlstyle
-  class DocumentTest < Minitest::Test
+  class TestDocument < Minitest::Test
     def test_that_render_returns_html
       raml = Raml::Root.new('title' => 'SampleRenderTest', 'baseUri' => 'http://foo.com')
       actual = Document.new(raml).render

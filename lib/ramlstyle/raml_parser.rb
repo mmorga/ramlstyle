@@ -2,8 +2,6 @@ require "raml"
 
 module Ramlstyle
   class RamlParser
-    attr_reader :raml
-
     def initialize(file_name)
       @file_name = file_name
     end

@@ -1,0 +1,15 @@
+AllCops:
+  Include:
+    - '**/Rakefile'
+  Exclude:
+    - 'bin/*'
+
+StringLiterals:
+  Enabled: false
+  # EnforcedStyle: double_quotes
+
+LineLength:
+  Max: 120
+
+Style/Documentation:
+  Enabled: false
