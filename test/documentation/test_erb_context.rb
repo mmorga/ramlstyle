@@ -6,7 +6,7 @@ module Ramlstyle
   module Documentation
     class TestERBContext < Minitest::Test
       def setup
-        @data = {alpha: "Hello", beta: 6}
+        @data = { alpha: "Hello", beta: 6 }
         @subject = ERBContext.new(@data)
       end
 
@@ -16,7 +16,7 @@ module Ramlstyle
       end
 
       def test_markdown
-        assert_match(/<em>hello<\/em>/, @subject.markdown('*hello*'))
+        assert_match(%r{<em>hello<\/em>}, @subject.markdown('*hello*'))
       end
 
       def test_context_binding
@@ -46,10 +46,10 @@ module Ramlstyle
       end
 
       def test_render_parameter
-        data = YAML.load(%q(
+        data = YAML.load('
             displayName: Job Metadata
             description: Field names prefixed with x-Zencoder-job-metadata- contain user-specified metadata.
-          ))
+          ')
         root = Raml::Root.new('title' => 'x', 'baseUri' => 'http://foo.com')
         header = Raml::Header.new('meta', data, root)
         actual = @subject.render_parameter(header)

@@ -19,7 +19,7 @@ module Ramlstyle
 
     class TestReviewCommand < Minitest::Test
       def test_run_reviews_raml
-        raml = stub()
+        raml = stub
         review = Ramlstyle::Review.new(raml)
         Ramlstyle::Review.expects(:new).with(raml).returns(review)
         review.expects(:review)
@@ -27,7 +27,7 @@ module Ramlstyle
       end
 
       def test_run_review_with_no_lint
-        raml = stub()
+        raml = stub
         review = Ramlstyle::Review.new(raml)
         Ramlstyle::Review.expects(:new).never
         review.expects(:review).never
@@ -39,7 +39,7 @@ module Ramlstyle
 
     class TestDocumentCommand < Minitest::Test
       def test_run_document_raml
-        raml = stub()
+        raml = stub
         document = Ramlstyle::Document.new(raml)
         Ramlstyle::Document.expects(:new).with(raml).returns(document)
         document.expects(:render_to_file)
@@ -47,7 +47,7 @@ module Ramlstyle
       end
 
       def test_run_document_with_no_document
-        raml = stub()
+        raml = stub
         document = Ramlstyle::Document.new(raml)
         Ramlstyle::Document.expects(:new).never
         document.expects(:render_to_file).never
@@ -60,8 +60,8 @@ module Ramlstyle
     class TestFileCommand < Minitest::Test
       def test_run
         settings = Settings.new
-        raml_file = stub()
-        parse_mock = mock()
+        raml_file = stub
+        parse_mock = mock
         parse_mock.expects(:run).with(settings, raml_file).returns(nil)
         ParseCommand.expects(:new).returns(parse_mock)
         ReviewCommand.expects(:new)
@@ -71,4 +71,3 @@ module Ramlstyle
     end
   end
 end
-
