@@ -25,11 +25,20 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ["lib", "vendor/raml_ruby/lib"] # Remove vendor/raml_ruby once gem released
 
   # TODO: Add dependency on raml_ruby once version released
-  spec.add_dependency "redcarpet"
-  spec.add_dependency "github-markup"
+  # Dependencies for raml_ruby (can be removed once raml_ruby is released)
+  spec.add_runtime_dependency(%q<activesupport>, ["~> 4.1"])
+  spec.add_runtime_dependency(%q<json-schema>, ["~> 2.5.1"])
+  spec.add_runtime_dependency(%q<uri_template>, ["~> 0.7"])
+  spec.add_development_dependency(%q<rspec>, ["~> 3.0"])
+  spec.add_development_dependency(%q<rr>, ["~> 1.1"])
+  spec.add_development_dependency(%q<yard>, ["~> 0.8"])
+  # End of raml_ruby dependencies
+
+  spec.add_runtime_dependency "redcarpet"
+  spec.add_runtime_dependency "github-markup"
 
   spec.add_development_dependency "pry"
   spec.add_development_dependency "simplecov"
