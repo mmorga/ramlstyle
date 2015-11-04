@@ -1,28 +1,29 @@
 # Ramlstyle
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ramlstyle`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Validates the a RAML file, runs lint rules against it, and produces HTML documentation.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Clone this repository on your machine, install dependencies and install the command.
 
-```ruby
-gem 'ramlstyle'
+```sh
+git clone https://github.com/mmorga/ramlstyle.git
+bundle
+bundle exec rake install:local
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install ramlstyle
 
 ## Usage
 
-TODO: Write usage instructions here
+Usage: `rubystyle [options] file1 file2 ...`
+
+Option               | Description
+-------------------- | -----------
+-v, --verbose        | Output more information
+    --no-document    | Do not produce HTML documentation
+    --no-lint        | Do not run linter rules
+-o, --output-dir DIR | Write HTML documentation to DIR
+    --version        | print the version
+-h, --help           | Display this screen
 
 ## Development
 
@@ -33,4 +34,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ramlstyle.
+
+## Credits
+
+1. Templates are derived from templates from [RAML2HTML](https://github.com/kevinrenskers/raml2html)
+2. RAML is parsed with [raml_ruby](https://github.com/coub/raml_ruby) (with some modifications)
 
