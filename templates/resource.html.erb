@@ -9,7 +9,7 @@
         <span class="methods">
           <% for method in @resource.methods.values %>
             <a class="collapsed" href="#panel_<%= @resource.unique_id %>" data-toggle="collapse" aria-expanded="false" aria-controls="panel_<%= @resource.unique_id %>">
-              <span class="badge badge_<%= method.name %>"><%= method.name %><% if method.secured_by.length %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
+              <span class="badge badge_<%= method.name %>"><%= method.name %><% if secured?(method) %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
             </a>
           <% end %>
         </span>
@@ -29,7 +29,7 @@
         <div class="list-group">
           <% for method in @resource.methods.values %>
             <div onclick="window.location.href = '#<%= @resource.unique_id %>_<%= method.name %>'" data-toggle="collapse" href="#<%= @resource.unique_id %>_<%= method.name %>" aria-expanded="false" aria-controls="<%= @resource.unique_id %>_<%= method.name %>" class="list-group-item">
-              <span class="badge badge_<%= method.name %>"><%= method.name %><% if method.secured_by.length %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
+              <span class="badge badge_<%= method.name %>"><%= method.name %><% if secured?(method) %> <span class="glyphicon glyphicon-lock" title="Authentication required"></span><% end %></span>
               <div class="method_description">
                 <%= markdown method.description%>
               </div>
@@ -38,9 +38,9 @@
             <div class="collapse" tabindex="0" id="<%= @resource.unique_id %>_<%= method.name %>">
               <div class="panel panel-default">
                 <div class="panel-body">
-                  <% if method.secured_by.length %>
+                  <% if secured?(method) %>
                     <div class="alert alert-warning">
-                      <span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <%= method.secured_by.keys.join(",") %>
+                      <span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by <%= security_scheme_names(method).join(", ") %>
                     </div>
                   <% end %>
 

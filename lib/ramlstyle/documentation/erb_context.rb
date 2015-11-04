@@ -24,6 +24,19 @@ module Ramlstyle
         RendererFactory.new.renderer_for_parameter(param).render
       end
 
+      def secured?(obj)
+        return true if obj.secured_by.reject {|s| s.name == "null"}.length > 0
+        return true if obj.secured_by_declarations.reject {|s| s.name == "null"}.length > 0
+        false
+      end
+
+      def security_scheme_names(obj)
+        if obj.secured_by.length > 0
+          return obj.secured_by.map(&:name)
+        end
+        obj.secured_by_declarations.map(&:name)
+      end
+
       def context_binding
         binding
       end
