@@ -3,10 +3,11 @@ require "optparse"
 module Ramlstyle
   module Command
     class Settings
-      attr_accessor :verbose, :no_document, :no_lint, :output_dir, :files
+      attr_accessor :verbose, :no_document, :no_lint, :output_dir, :files, :trace
 
       def initialize
         @verbose = false
+        @trace = false
         @no_document = false
         @no_lint = false
         @output_dir = Dir.getwd
@@ -32,6 +33,7 @@ module Ramlstyle
         OptionParser.new do |opts|
           opts.banner = "Usage: rubystyle [options] file1 file2 ..."
           opts.on('-v', '--verbose', 'Output more information') { settings.verbose = true }
+          opts.on('-t', '--trace', 'Output stack trace on error') { settings.trace = true }
           opts.on('--no-document', 'Do not produce HTML documentation') { settings.no_document = true }
           opts.on('--no-lint', 'Do not run linter rules') { settings.no_lint = true }
           opts.on('-o', '--output-dir DIR', 'Write HTML documentation to DIR') { |dir| settings.output_dir = dir }

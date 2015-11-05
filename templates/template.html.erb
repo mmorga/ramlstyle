@@ -203,8 +203,10 @@
                           </thead>
                           <tbody>
                             <% security_scheme.value['settings'].each do |k, v| %>
-                              <td><%= k %></td>
-                              <td><%= v %></td>
+                              <tr>
+                                <td><%= k %></td>
+                                <td><%= v %></td>
+                              </tr>
                             <% end %>
                           </tbody>
                         </table>

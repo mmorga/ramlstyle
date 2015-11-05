@@ -55,7 +55,12 @@ module Ramlstyle
       def run
         puts "\nParsing #{@raml_file}"
 
-        ParseCommand.new(ReviewCommand.new(DocumentCommand.new)).run(@opts, @raml_file)
+        begin
+          ParseCommand.new(ReviewCommand.new(DocumentCommand.new)).run(@opts, @raml_file)
+        rescue StandardError => error
+          puts error
+          print error.backtrace.join("\n") if @opts.trace
+        end
       end
     end
   end
