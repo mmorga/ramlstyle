@@ -171,6 +171,94 @@
               <%=  markdown(document.content)  %>
             <% end %>
           </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <a class="panel-toggle" data-toggle="collapse" href="#security-schemes" aria-expanded="false" aria-controls="security-schemes">
+                <h3 id="security-schemes-header" class="panel-title">Security Schemes <span class="caret" aria-hidden="true"></span></h3>
+              </a>
+            </div>
+
+            <% @raml.security_schemes.each do |key, security_scheme| %>
+              <div id="security-schemes" class="panel-body collapse">
+                <div class="top-resource-description">
+                  <% if security_scheme.value['description'] %>
+                    <%= markdown security_scheme.value['description'] %>
+                  <% else %>
+                    <%= key %>
+                  <% end %>
+                </div>
+
+                <div class="panel-group">
+                  <dl class="dl-horizontal">
+                    <dt>Type</dt>
+                    <dd><%= security_scheme.value['type'] %></dd>
+                    <% if security_scheme.value['settings'] %>
+                      <dt>Settings</dt>
+                      <dd>
+                        <table class="table">
+                          <thead>
+                            <th>Name</th>
+                            <th>Value</th>
+                          </thead>
+                          <tbody>
+                            <% security_scheme.value['settings'].each do |k, v| %>
+                              <td><%= k %></td>
+                              <td><%= v %></td>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      <dd>
+                    <% end %>
+                    <% if security_scheme.value['described_by'] %>
+                      <dt>Described By</dt>
+                      <dd>
+                        <!-- {{#with describedBy}} -->
+                        <table class="table">
+                          <caption>Headers</caption>
+                          <thead>
+                            <tr>
+                              <th>Header</th>
+                              <th>Description</th>
+                              <th>Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% security_scheme.value['described_by']['headers'].each do |key, header| %>
+                              <tr>
+                                <td><%= key %></td>
+                                <td><%= header.description %></td>
+                                <td><%= header.type %></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+
+                        <table class="table">
+                          <caption>Responses</caption>
+                          <thead>
+                            <tr>
+                              <th>HTTP Code</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% security_scheme.value['described_by']['responses'].each do |key, response| %>
+                              <tr>
+                                <td><%= key %></td>
+                                <td><%= response.description %></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      </dd>
+                    <% end %>
+                  </dl>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
           <% for resource in @raml.resources.values %>
             <div class="panel panel-default">
               <div class="panel-heading">
