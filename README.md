@@ -9,12 +9,15 @@ Clone this repository on your machine, install dependencies and install the comm
 ```sh
 git clone https://github.com/mmorga/ramlstyle.git
 bundle
-bundle exec rake install:local
+sudo bundle exec rake install:local  # if you are using the system Ruby
+bundle exec rake install:local   # if you are using a rbenv, rvm, etc
 ```
+
+
 
 ## Usage
 
-Usage: `rubystyle [options] file1 file2 ...`
+Usage: `ramlstyle [options] file1 file2 ...`
 
 Option               | Description
 -------------------- | -----------
