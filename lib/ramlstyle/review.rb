@@ -21,16 +21,25 @@ module Ramlstyle
 
       lint(:warning, "Method should have description", @raml.all_methods, &:description)
 
-      lint(:warning, "Patch, Post, and Put Methods should have JSON bodies", @raml.all_methods(%w(put post patch))) do |method|
+      lint(
+        :warning,
+        "Patch, Post, and Put Methods should have JSON bodies",
+        @raml.all_methods(%w(put post patch))) do |method|
         method.bodies.keys.include?("application/json")
       end
 
-      lint(:warning, "Patch, Post, and Put Methods should have JSON examples", @raml.all_methods(%w(put post patch))) do |method|
+      lint(
+        :warning,
+        "Patch, Post, and Put Methods should have JSON examples",
+        @raml.all_methods(%w(put post patch))) do |method|
         method.bodies.keys.include?("application/json") &&
           method.bodies["application/json"].example
       end
 
-      lint(:warning, "Patch, Post, and Put Methods should have JSON schema", @raml.all_methods(%w(put post patch))) do |method|
+      lint(
+        :warning,
+        "Patch, Post, and Put Methods should have JSON schema",
+        @raml.all_methods(%w(put post patch))) do |method|
         method.bodies.keys.include?("application/json") &&
           method.bodies["application/json"].schema
       end

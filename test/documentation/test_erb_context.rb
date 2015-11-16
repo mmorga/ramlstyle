@@ -24,7 +24,7 @@ module Ramlstyle
       end
 
       def test_render_resource
-        data = YAML.load(%q(
+        data = YAML.load(<<-RAML
           /processing_status:
             get:
               displayName: Processing status
@@ -38,7 +38,8 @@ module Ramlstyle
                           "type": "download",
                           "status":"initial"
                         }
-        ))
+        RAML
+                        )
         root = Raml::Root.new('title' => 'x', 'baseUri' => 'http://foo.com')
         resource = Raml::Resource.new('/widgets', data, root)
         actual = @subject.render_resource(resource)
