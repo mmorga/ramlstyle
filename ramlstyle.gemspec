@@ -32,9 +32,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency(%q<activesupport>, ["~> 4.1"])
   spec.add_runtime_dependency(%q<json-schema>, ["~> 2.5.1"])
   spec.add_runtime_dependency(%q<uri_template>, ["~> 0.7"])
-  spec.add_development_dependency(%q<rspec>, ["~> 3.0"])
-  spec.add_development_dependency(%q<rr>, ["~> 1.1"])
-  spec.add_development_dependency(%q<yard>, ["~> 0.8"])
+  # spec.add_development_dependency(%q<rspec>, ["~> 3.0"])
+  # spec.add_development_dependency(%q<rr>, ["~> 1.1"])
+  # spec.add_development_dependency(%q<yard>, ["~> 0.8"])
   # End of raml_ruby dependencies
 
   spec.add_runtime_dependency "redcarpet"
