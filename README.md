@@ -13,7 +13,11 @@ sudo bundle exec rake install:local  # if you are using the system Ruby
 bundle exec rake install:local   # if you are using a rbenv, rvm, etc
 ```
 
+If you aren't a regular ruby user, you should do this first:
 
+```sh
+sudo gem install bundler
+```
 
 ## Usage
 
