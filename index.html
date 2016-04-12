@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>RAML Style by mmorga</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/mmorga/ramlstyle">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>RAML Style</h1>
+            <h2>RAML validator, linter, and document production</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/mmorga/ramlstyle/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/mmorga/ramlstyle/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a id="ramlstyle" class="anchor" href="#ramlstyle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ramlstyle</h1>
+
+<p>Validates the a RAML file, runs lint rules against it, and produces HTML documentation.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Clone this repository on your machine, install dependencies and install the command.</p>
+
+<div class="highlight highlight-source-shell"><pre>git clone https://github.com/mmorga/ramlstyle.git
+bundle
+sudo bundle <span class="pl-c1">exec</span> rake install:<span class="pl-k">local</span>  <span class="pl-c"># if you are using the system Ruby</span>
+bundle <span class="pl-c1">exec</span> rake install:<span class="pl-k">local</span>   <span class="pl-c"># if you are using a rbenv, rvm, etc</span></pre></div>
+
+<p>If you aren't a regular ruby user, you should do this first:</p>
+
+<div class="highlight highlight-source-shell"><pre>sudo gem install bundler</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Usage: <code>ramlstyle [options] file1 file2 ...</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-v, --verbose</td>
+<td>Output more information</td>
+</tr>
+<tr>
+<td>--no-document</td>
+<td>Do not produce HTML documentation</td>
+</tr>
+<tr>
+<td>--no-lint</td>
+<td>Do not run linter rules</td>
+</tr>
+<tr>
+<td>-o, --output-dir DIR</td>
+<td>Write HTML documentation to DIR</td>
+</tr>
+<tr>
+<td>--version</td>
+<td>print the version</td>
+</tr>
+<tr>
+<td>-h, --help</td>
+<td>Display this screen</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development</h2>
+
+<p>After checking out the repo, run <code>bin/setup</code> to install dependencies. Then, run <code>rake test</code> to run the tests. You can also run <code>bin/console</code> for an interactive prompt that will allow you to experiment.</p>
+
+<p>To install this gem onto your local machine, run <code>bundle exec rake install</code>. To release a new version, update the version number in <code>version.rb</code>, and then run <code>bundle exec rake release</code>, which will create a git tag for the version, push git commits and tags, and push the <code>.gem</code> file to <a href="https://rubygems.org">rubygems.org</a>.</p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/%5BUSERNAME%5D/ramlstyle">https://github.com/[USERNAME]/ramlstyle</a>.</p>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Credits</h2>
+
+<ol>
+<li>Templates are derived from templates from <a href="https://github.com/kevinrenskers/raml2html">RAML2HTML</a>
+</li>
+<li>RAML is parsed with <a href="https://github.com/coub/raml_ruby">raml_ruby</a> (with some modifications)</li>
+</ol>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/mmorga">mmorga</a> can be found on <a href="https://github.com/mmorga/ramlstyle">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
