@@ -15,6 +15,7 @@ run-samples
 /bin/_guard-core
 /bin/bundler
 /bin/coderay
+/bin/erubis
 /bin/flay
 /bin/flog
 /bin/github-markup
