@@ -9,8 +9,8 @@ Clone this repository on your machine, install dependencies and install the comm
 ```sh
 git clone https://github.com/mmorga/ramlstyle.git
 bundle
-sudo bundle exec rake install:local  # if you are using the system Ruby
-bundle exec rake install:local   # if you are using a rbenv, rvm, etc
+sudo bundle exec rake install  # if you are using the system Ruby
+bundle exec rake install   # if you are using a rbenv, rvm, etc
 ```
 
 If you aren't a regular ruby user, you should do this first:
@@ -45,5 +45,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## Credits
 
 1. Templates are derived from templates from [RAML2HTML](https://github.com/kevinrenskers/raml2html)
-2. RAML is parsed with [raml_ruby](https://github.com/coub/raml_ruby) (with some modifications)
+2. RAML is parsed with [raml_ruby](https://github.com/coub/raml_ruby)
 
