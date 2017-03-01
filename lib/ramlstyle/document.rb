@@ -1,7 +1,3 @@
-require "ramlstyle/documentation/renderer"
-require "ramlstyle/documentation/renderer_factory"
-require "ramlstyle/documentation/erb_context"
-
 module Ramlstyle
   class Document
     def initialize(obj)

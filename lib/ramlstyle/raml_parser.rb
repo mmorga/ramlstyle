@@ -1,5 +1,3 @@
-require "raml"
-
 module Ramlstyle
   class RamlParser
     def initialize(file_name)

@@ -1,19 +1,28 @@
-require "erb"
-require "github/markup"
-require "ramlstyle/documentation/renderer_factory"
-
 module Ramlstyle
   module Documentation
     class ERBContext
       include ERB::Util
+
       def initialize(hash)
+        @options = {}
+        @markdown = Redcarpet::Markdown.new(
+          Redcarpet::Render::SmartyHTML,
+          no_intra_emphasis: true,
+          tables: true,
+          fenced_code_blocks: true,
+          autolink: true,
+          strikethrough: true,
+          underline: true,
+          quote: true,
+          footnotes: true
+        )
         hash.each_pair do |key, value|
           instance_variable_set('@' + key.to_s, value)
         end
       end
 
       def markdown(str)
-        GitHub::Markup.render("f.md", str || "")
+        @markdown.render(str || "")
       end
 
       def render_resource(res)
@@ -26,13 +35,13 @@ module Ramlstyle
 
       def secured?(obj)
         return true if obj.secured_by.count { |s| s.name == "null" } > 0
-        return true if obj.secured_by_declarations.count { |s| s.name == "null" } > 0
+        return true if obj.security_scheme_declarations.count { |s| s.name == "null" } > 0
         false
       end
 
       def security_scheme_names(obj)
         return obj.secured_by.map(&:name) if obj.secured_by.length > 0
-        obj.secured_by_declarations.map(&:name)
+        obj.security_scheme_declarations.map(&:name)
       end
 
       def context_binding

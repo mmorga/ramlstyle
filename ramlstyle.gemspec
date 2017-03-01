@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "ramlstyle"
   spec.version       = Ramlstyle::VERSION
   spec.authors       = ["Mark Morga"]
-  spec.email         = ["mmorga@rackspace.com"]
+  spec.email         = ["markmorga@gmail.com"]
 
   spec.summary       = "Cmd line tool to validate, lint, and document a RAML API."
   spec.description   =
@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "redcarpet"
-  spec.add_runtime_dependency "github-markup"
   spec.add_runtime_dependency "raml_ruby"
 
   spec.add_development_dependency "pry"

@@ -1,6 +1,3 @@
-require "erb"
-require "ramlstyle/documentation/erb_context"
-
 module Ramlstyle
   module Documentation
     class Renderer

@@ -1,5 +1,3 @@
-require "raml"
-
 module Raml
   class Root
     def path_name

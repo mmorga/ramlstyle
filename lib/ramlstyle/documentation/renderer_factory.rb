@@ -1,6 +1,3 @@
-require "raml"
-require "ramlstyle/documentation/renderer"
-
 module Ramlstyle
   module Documentation
     class RendererFactory

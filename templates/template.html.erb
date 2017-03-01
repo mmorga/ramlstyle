@@ -179,13 +179,13 @@
               </a>
             </div>
 
-            <% @raml.security_schemes.each do |key, security_scheme| %>
+            <% @raml.security_schemes.each do |scheme_name, security_scheme| %>
               <div id="security-schemes" class="panel-body collapse">
                 <div class="top-resource-description">
                   <% if security_scheme.value['description'] %>
                     <%= markdown security_scheme.value['description'] %>
                   <% else %>
-                    <%= key %>
+                    <%= scheme_name %>
                   <% end %>
                 </div>
 
@@ -226,9 +226,9 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <% security_scheme.value['described_by']['headers'].each do |key, header| %>
+                            <% security_scheme.value['described_by']['headers'].each do |header_name, header| %>
                               <tr>
-                                <td><%= key %></td>
+                                <td><%= header_name %></td>
                                 <td><%= header.description %></td>
                                 <td><%= header.type %></td>
                               </tr>
@@ -245,9 +245,9 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <% security_scheme.value['described_by']['responses'].each do |key, response| %>
+                            <% security_scheme.value['described_by']['responses'].each do |status_code, response| %>
                               <tr>
-                                <td><%= key %></td>
+                                <td><%= status_code %></td>
                                 <td><%= response.description %></td>
                               </tr>
                             <% end %>

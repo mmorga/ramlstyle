@@ -1,6 +1,3 @@
-require "ramlstyle/command/options"
-require "ramlstyle/command/file_command"
-
 module Ramlstyle
   class CLICommand
     attr_reader :opts

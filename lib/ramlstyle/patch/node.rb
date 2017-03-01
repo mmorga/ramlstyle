@@ -1,5 +1,3 @@
-require "raml"
-
 module Raml
   class Node
     # A method that gives you the full path of the node to make it easier to find the error.
