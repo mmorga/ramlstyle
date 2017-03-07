@@ -35,13 +35,13 @@ module Ramlstyle
 
       def secured?(obj)
         return true if obj.secured_by.count { |s| s.name == "null" } > 0
-        return true if obj.security_scheme_declarations.count { |s| s.name == "null" } > 0
+        return true if obj.security_scheme_declarations.count { |name, scheme| name == "null" } > 0
         false
       end
 
       def security_scheme_names(obj)
         return obj.secured_by.map(&:name) if obj.secured_by.length > 0
-        obj.security_scheme_declarations.map(&:name)
+        obj.security_scheme_declarations.values.map(&:name)
       end
 
       def context_binding

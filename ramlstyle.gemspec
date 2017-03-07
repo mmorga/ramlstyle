@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Cmd line tool to validate, lint, and document a RAML API."
   spec.description   =
     "Validates RAML file (and JSON schema), runs a configurable set of linting rules, and produces HTML documentation."
-  spec.homepage      = "http://github.com/rackerlabs/ramlstyle"
+  spec.homepage      = "http://github.com/mmorga/ramlstyle"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
