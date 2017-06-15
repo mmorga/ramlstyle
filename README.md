@@ -1,22 +1,18 @@
 # Ramlstyle
 
-Validates the a RAML file, runs lint rules against it, and produces HTML documentation.
+Validates the a RAML file, runs lint rules against it, and produces HTML documentation. RAMLStyle currently only works with RAML version 0.8. RAML 1.0 support should be coming soon.
 
 ## Installation
 
-Clone this repository on your machine, install dependencies and install the command.
+Install this gem from rubygems:
 
 ```sh
-git clone https://github.com/mmorga/ramlstyle.git
-bundle
-sudo bundle exec rake install  # if you are using the system Ruby
-bundle exec rake install   # if you are using a rbenv, rvm, etc
+gem install ramlstyle
 ```
 
-If you aren't a regular ruby user, you should do this first:
-
+If you are using your system ruby, you may need to use sudo:
 ```sh
-sudo gem install bundler
+sudo gem install ramlstyle
 ```
 
 ## Usage
@@ -40,10 +36,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ramlstyle.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mmorga/ramlstyle.
 
 ## Credits
 
 1. Templates are derived from templates from [RAML2HTML](https://github.com/kevinrenskers/raml2html)
 2. RAML is parsed with [raml_ruby](https://github.com/coub/raml_ruby)
-
